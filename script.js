@@ -12,13 +12,12 @@ $(document).ready(function(){
       	},
     });
     
-    $( ".window" ).resizable({containment: "parent", minHeight: 200, minWidth: 200, handles: 'n, e, s, w'});
+    $( ".window" ).not(".fixed-size").resizable({containment: "parent", minHeight: 200, minWidth: 200, handles: 'n, e, s, w'});
 
     $(".window").mousedown(function(){
     	zindex++;
     	$(this).css({"z-index" : zindex});
     });
-
     $(".button-close").click(function(){
     	$(this).parent(".window-header").parent(".window").css({"display" : "none"});
 
@@ -55,8 +54,11 @@ $(document).ready(function(){
 		if(!($(this).hasClass("active"))){
 			margin++;
 			zindex++;
-			$("#" + id).css({"display" : "block", "left" : margin*40, "top" : margin*40, "z-index" : zindex});
-			$(this).addClass("active");
+			$("#" + id).css({"display" : "block", "z-index" : zindex});
+			if(!($(this).hasClass("no-virgin"))){
+				$("#" + id).css({"left" : margin*40, "top" : margin*40});
+			}
+			$(this).addClass("active no-virgin");
 		}
 	})
 });

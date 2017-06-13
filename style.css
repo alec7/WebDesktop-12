@@ -51,6 +51,16 @@ html,body{
   cursor:default;
 }
 
+#Twitter-w{
+  width:250px;
+  height:500px;
+  max-height:500px;
+  overflow:hidden;
+}
+.timeline-InformationCircle-widgetParent{
+  display:none !important;
+}
+
 .ui-icon{
   display:none !important;
 }
@@ -78,7 +88,7 @@ html,body{
   height:50px;
   width:50px;
   border-radius:100%;
-  background:rgba(0,255,0,0.1);
+  background:#009688;
   cursor:pointer;
 }
 .dock-item:after{
