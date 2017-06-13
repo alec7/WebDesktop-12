@@ -18,6 +18,7 @@ $(document).ready(function(){
     	zindex++;
     	$(this).css({"z-index" : zindex});
     });
+
     $(".button-close").click(function(){
     	$(this).parent(".window-header").parent(".window").css({"display" : "none"});
 
@@ -51,13 +52,18 @@ $(document).ready(function(){
 
 		var id = $(this).attr('id');
 		id += "-w";
+		
 		if(!($(this).hasClass("active"))){
+			
 			margin++;
 			zindex++;
+			
 			$("#" + id).css({"display" : "block", "z-index" : zindex});
+			
 			if(!($(this).hasClass("no-virgin"))){
 				$("#" + id).css({"left" : margin*40, "top" : margin*40});
 			}
+			
 			$(this).addClass("active no-virgin");
 		}
 	})
