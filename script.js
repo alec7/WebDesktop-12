@@ -115,7 +115,7 @@ $(document).ready(function(){
             if(dockmitems > 0){
                 dockmitems--;
             }
-            $(".dock").css({"padding-right" : 90*dockmitems+5});
+            $(".dock").css({"padding-right" : 95*dockmitems+10});
             $(this).removeClass("window-minimized fixed-size");
 
             var windowname = $(this).attr('id');
@@ -129,7 +129,7 @@ $(document).ready(function(){
                 if($(this).hasClass("window-minimized")){
                     var windowname = $(this).attr('id');
                     windowname = jQuery.inArray( windowname, minimizednames);
-                    $(this).css({"left" : 90*(windowname+1)});
+                    $(this).css({"left" : 95*(windowname+1)});
                 }
             });
 
