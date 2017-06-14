@@ -5,6 +5,7 @@
 ->Remember window positions of windows when minimizing
 ~Fix window content causing problems when dragging
 ~Fix dock indicator appearing despite window being already closed
+~Fix general positioning of minimized windows when > 1 minimized
 
 0.0.2
 +Twitter widget

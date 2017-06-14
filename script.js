@@ -4,6 +4,7 @@ $(document).ready(function(){
     var margin = 0;
     var dockmitems = 0;
     var dockwidth = 0;
+    var dockposition = 0;
     var windowpositions = [];
     var minimizednames = [];
 
@@ -67,15 +68,35 @@ $(document).ready(function(){
     $(".button-minimize").click(function(){
         dockmitems++;
         dockwidth = $(".dock").width();
-        $(".dock").css({"padding-right" : 95*dockmitems});
+        $(".dock").css({"padding-right" : 95*dockmitems+10});
         $(this).parent(".window-header").parent(".window").addClass("window-minimized fixed-size");
-        $(this).parent(".window-header").parent(".window").css({"left" : dockwidth/2-130+90*dockmitems});
+        $(this).parent(".window-header").parent(".window").css({"left" : 95*dockmitems});
         
         var item = $(this).parent(".window-header").parent(".window").position();
         item = item.left;
         windowpositions.push(item);
         item = $(this).parent(".window-header").parent(".window").attr('id');
         minimizednames.push(item);
+        
+        setLeftMargin();
+    });
+
+    /* Set general left margin for all minimized windows */
+
+    function setLeftMargin(){
+        dockposition = $(".dock").position();
+        var item = 160 + dockposition.left;
+        $(".window").each(function() {
+            if($(this).hasClass("window-minimized")){
+                $(this).css({"margin-left" : item});
+            }
+        });
+    }
+
+    /* Adjust left margin of minimized windows when window is resized */
+
+    $(window).on('resize', function(){
+        setLeftMargin();
     });
 
     /* Restores window
@@ -85,6 +106,7 @@ $(document).ready(function(){
         - Grabs "left" value N from window position array
         - Sets "left" value for window
         - Removes name and position from array
+        - Sets left value of each minimized window when a window gets restored
      */
 
     $(".window").mouseup(function(){
@@ -93,7 +115,7 @@ $(document).ready(function(){
             if(dockmitems > 0){
                 dockmitems--;
             }
-            $(".dock").css({"padding-right" : 95*dockmitems+5});
+            $(".dock").css({"padding-right" : 90*dockmitems+5});
             $(this).removeClass("window-minimized fixed-size");
 
             var windowname = $(this).attr('id');
@@ -102,6 +124,17 @@ $(document).ready(function(){
             $(this).css({"left" : item});
             minimizednames.splice(windowname, 1);
             windowpositions.splice(windowname, 1);
+
+            $(".window").each(function(){
+                if($(this).hasClass("window-minimized")){
+                    var windowname = $(this).attr('id');
+                    windowname = jQuery.inArray( windowname, minimizednames);
+                    $(this).css({"left" : 90*(windowname+1)});
+                }
+            });
+
+            $(this).css({"margin-left" : "0"});
+            setLeftMargin();
         }
     });
 

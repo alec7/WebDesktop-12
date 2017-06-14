@@ -30,7 +30,6 @@ html,body{
   height:50px !important;
   width:80px !important;
   top:calc(100% + 10px) !important;
-  margin-left:50%;
   cursor:pointer;
 }
 
