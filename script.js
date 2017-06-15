@@ -87,7 +87,7 @@ $(document).ready(function(){
         fontsize = fontsize.slice(0, -2);
         item = fontsize * windowwidth;
         $(this).parent(".window-header").parent(".window").children(".window-content").css({"font-size" : item + "px"});
-        $("iframe").css({"transform" : "scale(" + windowwidth*1.4 + ")"});
+        $(this).parent(".window-header").parent(".window").children(".window-content").children("iframe").css({"transform" : "scale(" + windowwidth*1.4 + ")"});
 
     });
 
@@ -159,7 +159,7 @@ $(document).ready(function(){
             setLeftMargin();
 
             $(this).children(".window-content").css({"font-size" : fontsize + "px"});
-            $("iframe").css({"transform" : "scale(1)"});
+            $(this).children(".window-content").children("iframe").css({"transform" : "scale(1)"});
         }
     });
 
