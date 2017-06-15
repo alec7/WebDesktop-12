@@ -88,7 +88,7 @@ $(document).ready(function(){
         setLeftMargin();
 
         windowwidth = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").width();
-        windowwidth = 80 / windowwidth;
+        windowwidth = 78 / windowwidth;
         fontsize = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css('font-size');
         fontsize = fontsize.slice(0, -2);
         item = fontsize * windowwidth;
