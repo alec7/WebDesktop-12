@@ -44,10 +44,10 @@ $(document).ready(function(){
     */
 
     $(".button-close").click(function(){
-        $(this).parent(".window-header").parent(".window").css({"display" : "none"});
-        $(this).parent(".window-header").parent(".window").removeClass("active show-indicator");
+        $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css({"display" : "none"});
+        $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").removeClass("active show-indicator");
 
-        var item = $(this).parent(".window-header").parent(".window").attr('id');
+        var item = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").attr('id');
         item = item.slice(0, -2);
         $("#" + item).removeClass("active show-indicator");
 
@@ -68,24 +68,24 @@ $(document).ready(function(){
         dockmitems++;
         setDockSize();
 
-        $(this).parent(".window-header").parent(".window").addClass("window-minimized");
-        $(this).parent(".window-header").parent(".window").css({"left" : 90*dockmitems, "transition" : transition + "ms"});
+        $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").addClass("window-minimized");
+        $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css({"left" : 90*dockmitems, "transition" : transition + "ms"});
         
-        var item = $(this).parent(".window-header").parent(".window").position();
+        var item = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").position();
         item = item.left;
         windowpositions.push(item);
-        item = $(this).parent(".window-header").parent(".window").attr('id');
+        item = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").attr('id');
         minimizednames.push(item);
         
         setLeftMargin();
 
-        windowwidth = $(this).parent(".window-header").parent(".window").width();
+        windowwidth = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").width();
         windowwidth = 80 / windowwidth;
-        fontsize = $(this).parent(".window-header").parent(".window").css('font-size');
+        fontsize = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css('font-size');
         fontsize = fontsize.slice(0, -2);
         item = fontsize * windowwidth;
-        $(this).parent(".window-header").parent(".window").children(".window-content").css({"font-size" : item + "px"});
-        $(this).parent(".window-header").parent(".window").children(".window-content").children("iframe").css({"transform" : "scale(" + windowwidth*1.4 + ")"});
+        $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").children(".window-content").css({"font-size" : item + "px"});
+        $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").children(".window-content").children("iframe").css({"transform" : "scale(" + windowwidth*1.4 + ")"});
     });
 
     /* Set general left margin for all minimized windows */

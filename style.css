@@ -60,22 +60,111 @@ html,body{
   transition:600ms;
 }
 
+.window-header-buttons{
+  margin:4px;
+  font-size:0;
+}
+
 .window-header-button{
-  height:70%;
-  width:14px;
-  margin:3px 1.5px 0 1.5px;
+  position:relative;
+  display:inline-block;
+  box-sizing: border-box;
+  height:100%;
+  width:12px;
   border-radius:100%;
+  border:1px solid rgba(0,0,0,0.1);
   background:grey;
   cursor:pointer;
   transition:600ms;
 }
 
+.window-header-button:before{
+  display:none;
+}
+
+.window-header-button:after{
+  display:none;
+}
+
+.window-header-buttons:hover > .window-header-button:before{
+  display:initial;
+}
+
+.window-header-buttons:hover > .window-header-button:after{
+  display:initial;
+}
+
 .button-close{
-  background:#D50000;
+  margin-right:4px;
+  background:#FD5858;
 }
 
 .button-minimize{
-  background:#FFEB3B;
+  margin-right:4px;
+  background:#FEBE30;
+}
+
+.button-fullscreen{
+  //background:#36CD40;
+}
+
+.button-close:before{
+  position:absolute;
+  content:'';
+  top:50%;
+  left:10%;
+  width:80%;
+  height:2px;
+  background:#6A3333;
+  transform:translateY(-50%)rotate(-45deg);
+}
+
+.button-close:after{
+  position:absolute;
+  content:'';
+  top:50%;
+  left:10%;
+  width:80%;
+  height:2px;
+  background:#6A3333;
+  transform:translateY(-50%)rotate(45deg);
+}
+
+.button-minimize:before{
+  position:absolute;
+  content:'';
+  top:50%;
+  left:10%;
+  width:80%;
+  height:2px;
+  background:#6A5526;
+  transform:translateY(-50%);
+}
+
+.button-fullscreen:before{
+  position:absolute;
+  content:'';
+  top:50%;
+  left:50%;
+  width:0;
+  height:0;
+  transform:translateX(calc(-50% - 2px))translateY(calc(-50% + 2px))rotate(45deg);
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  border-top: 3.5px solid rgba(0,0,0,0.5);
+}
+
+.button-fullscreen:after{
+  position:absolute;
+  content:'';
+  top:50%;
+  left:50%;
+  width:0;
+  height:0;
+  transform:translateX(calc(-50% + 2px))translateY(calc(-50% - 2px))rotate(45deg);
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  border-bottom: 3.5px solid rgba(0,0,0,0.5);
 }
 
 .window-header-title{
