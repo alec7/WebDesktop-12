@@ -23,7 +23,6 @@ html,body{
   height:400px;
   background:white;
   box-shadow:0 5px 40px rgba(0,0,0,0.075);
-  transition:600ms;
 }
 
 .window-minimized{
@@ -40,6 +39,16 @@ html,body{
 
 .window-minimized > .ui-resizable-handle{
   display:none;
+}
+
+.window-minimized > .window-content{
+  max-height:100%;
+  overflow:hidden;
+  pointer-events: none;
+}
+
+.fixed-size > .window-content{
+  overflow:hidden;
 }
 
 .window-header{
@@ -77,6 +86,17 @@ html,body{
   flex-grow:1;
   cursor:default;
   overflow: hidden;
+}
+
+.window-content{
+  max-height:calc(100% - 20px);
+  overflow-y:auto;
+  transition:600ms;
+}
+
+iframe{
+  transform-origin: top left;
+  transition:600ms;
 }
 
 #Twitter-w{

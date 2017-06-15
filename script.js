@@ -5,17 +5,11 @@ $(document).ready(function(){
     var dockmitems = 0;
     var dockwidth = 0;
     var dockposition = 0;
+    var windowwidth = 0;
+    var fontsize = 0;
     var windowpositions = [];
     var minimizednames = [];
-
-    /* Makes resizing and dragging not lag */
-
-    $("body").mousedown(function(){
-        $(".window").css({"transition" : "0ms"});
-    });
-    $("body").mouseup(function(){
-        $(".window").css({"transition" : "600ms"});
-    });
+    var transition = 600;
     
     /* jQuery UI Draggable and Resizable functions */
 
@@ -62,15 +56,22 @@ $(document).ready(function(){
     /* Minimizes window
         - Widens dock through padding
         - Minimizes window with class and specific "left" positioning property
+        - Adds transition to window and removes it when done
         - Saves window position and window name in separate arrays
+        - Calculates scale value from window width and multiplies it with font size, also sets scale factor for iframes
      */
 
     $(".button-minimize").click(function(){
         dockmitems++;
         dockwidth = $(".dock").width();
-        $(".dock").css({"padding-right" : 95*dockmitems+10});
-        $(this).parent(".window-header").parent(".window").addClass("window-minimized fixed-size");
-        $(this).parent(".window-header").parent(".window").css({"left" : 95*dockmitems});
+        setDockSize();
+
+        $(this).parent(".window-header").parent(".window").addClass("window-minimized");
+        $(this).parent(".window-header").parent(".window").css({"left" : 90*dockmitems, "transition" : transition + "ms"});
+        
+        setTimeout(function(){
+            $(".window").css({"transition" : "0ms"});
+        }, transition);
         
         var item = $(this).parent(".window-header").parent(".window").position();
         item = item.left;
@@ -79,6 +80,15 @@ $(document).ready(function(){
         minimizednames.push(item);
         
         setLeftMargin();
+
+        windowwidth = $(this).parent(".window-header").parent(".window").width();
+        windowwidth = 80 / windowwidth;
+        fontsize = $(this).parent(".window-header").parent(".window").css('font-size');
+        fontsize = fontsize.slice(0, -2);
+        item = fontsize * windowwidth;
+        $(this).parent(".window-header").parent(".window").children(".window-content").css({"font-size" : item + "px"});
+        $("iframe").css({"transform" : "scale(" + windowwidth*1.4 + ")"});
+
     });
 
     /* Set general left margin for all minimized windows */
@@ -93,6 +103,12 @@ $(document).ready(function(){
         });
     }
 
+    /* Calculates dock padding */
+
+    function setDockSize(){
+        $(".dock").css({"padding-right" : 90*dockmitems+5});
+    }
+
     /* Adjust left margin of minimized windows when window is resized */
 
     $(window).on('resize', function(){
@@ -105,8 +121,10 @@ $(document).ready(function(){
         - Fetches window name and searches for its position N in window name array
         - Grabs "left" value N from window position array
         - Sets "left" value for window
+        - Adds transition to window and removes it when done
         - Removes name and position from array
         - Sets left value of each minimized window when a window gets restored
+        - Restores font size of window contents and scale factor of iframes
      */
 
     $(".window").mouseup(function(){
@@ -115,26 +133,33 @@ $(document).ready(function(){
             if(dockmitems > 0){
                 dockmitems--;
             }
-            $(".dock").css({"padding-right" : 95*dockmitems+10});
-            $(this).removeClass("window-minimized fixed-size");
+            setDockSize();
+            $(this).removeClass("window-minimized");
 
             var windowname = $(this).attr('id');
             windowname = jQuery.inArray( windowname, minimizednames);
             item = windowpositions[windowname];
-            $(this).css({"left" : item});
+            $(this).css({"left" : item, "transition" : transition + "ms"});
             minimizednames.splice(windowname, 1);
             windowpositions.splice(windowname, 1);
+
+            setTimeout(function(){
+                $(".window").css({"transition" : "0ms"});
+            }, transition);
 
             $(".window").each(function(){
                 if($(this).hasClass("window-minimized")){
                     var windowname = $(this).attr('id');
                     windowname = jQuery.inArray( windowname, minimizednames);
-                    $(this).css({"left" : 95*(windowname+1)});
+                    $(this).css({"left" : 90*(windowname+1)});
                 }
             });
 
             $(this).css({"margin-left" : "0"});
             setLeftMargin();
+
+            $(this).children(".window-content").css({"font-size" : fontsize + "px"});
+            $("iframe").css({"transform" : "scale(1)"});
         }
     });
 

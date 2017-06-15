@@ -1,5 +1,9 @@
 ~This only exists for my own convenience and reflection~
 
+0.0.4
++Minimizing scales content (transforms iframes and adjusts font size)
+~Fix restoring animation
+
 0.0.3
 +Minimizing groundwork
 ->Remember window positions of windows when minimizing
@@ -23,6 +27,4 @@
 
 notes
 
-minimized positioning left: dock width only, centering with another property, maybe transform translatex? (not even dock width, only offset!)
-include dock width in margin left property, set for all windows at once whenever change happens
 take window width before minimizing, compare to fixed minized width, calculate scale factor for window content from that
