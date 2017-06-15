@@ -1,8 +1,13 @@
 ~This only exists for my own convenience and reflection~
 
+0.0.5
++Window design including fore- and background states
+~Fix dock indicator colour and position
+
 0.0.4
 +Minimizing scales content (transforms iframes and adjusts font size)
 +Add animations to dock and its items
++Window button style
 ~Fix restoring animation
 ~Fix behaviour of minimized windows when resizing
 

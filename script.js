@@ -31,11 +31,19 @@ $(document).ready(function(){
     
     $( ".window" ).not(".fixed-size").resizable({containment: "parent", minHeight: 200, minWidth: 200, handles: 'n, e, s, w'});
 
+    /* Makes all windows background when clicking desktop */
+
+    $(".backdrop").click(function(){
+        $(".window").removeClass("foreground");
+    });
+
     /* Bring clicked window to foreground */
 
     $(".window").mousedown(function(){
         zindex++;
         $(this).css({"z-index" : zindex});
+        $(".window").removeClass("foreground");
+        $(this).addClass("foreground");
     });
 
     /* Closes window
@@ -156,6 +164,8 @@ $(document).ready(function(){
             }
             setDockSize();
             $(this).removeClass("window-minimized");
+            $(".window").removeClass("foreground");
+            $(this).addClass("foreground");
 
             var windowname = $(this).attr('id');
             windowname = jQuery.inArray( windowname, minimizednames);
@@ -228,7 +238,8 @@ $(document).ready(function(){
             }
             
             $(this).addClass("active no-virgin");
-            $("#" + id).addClass("active");
+            $(".window").removeClass("foreground");
+            $("#" + id).addClass("active foreground");
         }
     })
 });
