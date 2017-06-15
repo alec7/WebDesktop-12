@@ -75,7 +75,6 @@ html,body{
 
 .window-header{
   display:flex;
-  padding:0 1px;
   height:20px;
   background:#F6F6F6;
   margin-top:0;
@@ -87,7 +86,7 @@ html,body{
 }
 
 .window-header-buttons{
-  margin:4px;
+  margin:4px 8px;
   font-size:0;
 }
 
@@ -121,12 +120,12 @@ html,body{
 }
 
 .button-close{
-  margin-right:4px;
+  margin-right:8px;
   background:#FD5858;
 }
 
 .button-minimize{
-  margin-right:4px;
+  margin-right:8px;
   background:#FEBE30;
 }
 
