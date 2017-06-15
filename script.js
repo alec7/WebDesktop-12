@@ -164,9 +164,10 @@ $(document).ready(function(){
             minimizednames.splice(windowname, 1);
             windowpositions.splice(windowname, 1);
 
+            item = $(this);
             setTimeout(function(){
-                $(".window").css({"transition" : "0ms"});
-            }, transition);
+                $(item).css({"transition" : "0ms"});
+            }, 1);
 
             $(".window").each(function(){
                 if($(this).hasClass("window-minimized")){
