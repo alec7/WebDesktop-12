@@ -2,6 +2,7 @@
 
 0.0.4
 +Minimizing scales content (transforms iframes and adjusts font size)
++Add animations to dock and its items
 ~Fix restoring animation
 
 0.0.3

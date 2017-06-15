@@ -10,7 +10,9 @@ $(document).ready(function(){
     var windowpositions = [];
     var minimizednames = [];
     var transition = 600;
-    
+
+    setPseudoDockWidth();
+
     /* jQuery UI Draggable and Resizable functions */
 
     $( ".window" ).draggable({
@@ -63,15 +65,10 @@ $(document).ready(function(){
 
     $(".button-minimize").click(function(){
         dockmitems++;
-        dockwidth = $(".dock").width();
         setDockSize();
 
         $(this).parent(".window-header").parent(".window").addClass("window-minimized");
         $(this).parent(".window-header").parent(".window").css({"left" : 90*dockmitems, "transition" : transition + "ms"});
-        
-        setTimeout(function(){
-            $(".window").css({"transition" : "0ms"});
-        }, transition);
         
         var item = $(this).parent(".window-header").parent(".window").position();
         item = item.left;
@@ -88,13 +85,12 @@ $(document).ready(function(){
         item = fontsize * windowwidth;
         $(this).parent(".window-header").parent(".window").children(".window-content").css({"font-size" : item + "px"});
         $(this).parent(".window-header").parent(".window").children(".window-content").children("iframe").css({"transform" : "scale(" + windowwidth*1.4 + ")"});
-
     });
 
     /* Set general left margin for all minimized windows */
 
     function setLeftMargin(){
-        dockposition = $(".dock").position();
+        dockposition = $(".dock-background").position();
         var item = 160 + dockposition.left;
         $(".window").each(function() {
             if($(this).hasClass("window-minimized")){
@@ -103,10 +99,18 @@ $(document).ready(function(){
         });
     }
 
+    /* Sets pseudo dock width so minimized window positions can be taken from it*/
+
+    function setPseudoDockWidth(){
+        dockwidth = $(".dock").width();
+        $(".dock-background").css({"width" : dockwidth});
+    }
+
     /* Calculates dock padding */
 
     function setDockSize(){
         $(".dock").css({"padding-right" : 90*dockmitems+5});
+        $(".dock-background").css({"padding-right" : 90*dockmitems+5});
     }
 
     /* Adjust left margin of minimized windows when window is resized */
