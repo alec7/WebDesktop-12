@@ -4,6 +4,7 @@
 +Minimizing scales content (transforms iframes and adjusts font size)
 +Add animations to dock and its items
 ~Fix restoring animation
+~Fix behaviour of minimized windows when resizing
 
 0.0.3
 +Minimizing groundwork
@@ -23,9 +24,3 @@
 +Provisory window layout
 +Windows can be opened from dock and closed with button
 +jQuery UI draggable and resizable windows
-
-
-
-notes
-
-take window width before minimizing, compare to fixed minized width, calculate scale factor for window content from that

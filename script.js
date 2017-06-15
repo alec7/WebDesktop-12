@@ -2,6 +2,7 @@ $(document).ready(function(){
 
     var zindex = 0;
     var margin = 0;
+    var item = 0;
     var dockmitems = 0;
     var dockwidth = 0;
     var dockposition = 0;
@@ -113,10 +114,26 @@ $(document).ready(function(){
         $(".dock-background").css({"padding-right" : 90*dockmitems+5});
     }
 
-    /* Adjust left margin of minimized windows when window is resized */
+    /* Sets transition back to its value after window resizing done */
+
+    function setWindowTransition(){
+        $(".window").each(function(){
+            if($(this).hasClass("window-minimized")){
+                $(".window").css({"transition" : transition + "ms"});
+            }
+        });
+    }
+
+    /* Adjust left margin of minimized windows when window is resized
+        - Also removes transition from minimized window to make then not behave weird as fuck
+     */
 
     $(window).on('resize', function(){
         setLeftMargin();
+        $(".window").css({"transition" : "0ms"});
+
+        clearTimeout(item);
+        item = setTimeout(setWindowTransition, 100);
     });
 
     /* Restores window
