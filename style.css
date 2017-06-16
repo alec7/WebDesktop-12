@@ -10,6 +10,10 @@ html,body{
   background-size:cover;
 }
 
+body.dragging iframe{
+  pointer-events: none;
+}
+
 .header{
   background:rgba(0,0,0,0.5);
 }
@@ -37,6 +41,7 @@ html,body{
   border:1px solid #C6C6C6;
   border-radius:7px;
   box-shadow:0 15px 60px rgba(0,0,0,0.2);
+  font-size:0;
 }
 
 .foreground{
@@ -57,6 +62,7 @@ html,body{
 .window-minimized > .window-header{
   opacity:0;
   height:0;
+  pointer-events:none;
 }
 
 .window-minimized > .ui-resizable-handle{
@@ -64,7 +70,7 @@ html,body{
 }
 
 .window-minimized > .window-content{
-  max-height:100%;
+  height:100%;
   overflow:hidden;
   pointer-events: none;
 }
@@ -94,7 +100,7 @@ html,body{
   position:relative;
   display:inline-block;
   box-sizing: border-box;
-  height:100%;
+  height:12px;
   width:12px;
   border-radius:100%;
   border:1px solid rgba(0,0,0,0.1);
@@ -203,14 +209,14 @@ html,body{
 }
 
 .window-content{
-  max-height:calc(100% - 20px);
-  overflow-y:auto;
+  height:calc(100% - 18px);
   transition:600ms;
 }
 
 iframe{
-  transform-origin: top left;
-  transition:600ms;
+  border:0;
+  width:100%;
+  height:100%;
 }
 
 #Twitter-w{

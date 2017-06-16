@@ -1,5 +1,11 @@
 ~This only exists for my own convenience and reflection~
 
+0.0.6
++Generate windows and dock items dynamically from subfolder
+~Fix window action buttons misbehaving when minimized
+~Fix iframes screwing with dragging and resizing
+-Remove scaling when minimizing cause not working properly (readding in different form at some point)
+
 0.0.5
 +Window design including fore- and background states
 ~Fix dock indicator colour and position
@@ -29,3 +35,6 @@
 +Provisory window layout
 +Windows can be opened from dock and closed with button
 +jQuery UI draggable and resizable windows
+
+notes
+Find solution to prevent window action buttons from bringing window to foreground
