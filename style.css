@@ -10,10 +10,6 @@ html,body{
   background-size:cover;
 }
 
-body.dragging iframe{
-  pointer-events: none;
-}
-
 .header{
   background:rgba(0,0,0,0.5);
 }
@@ -210,6 +206,7 @@ body.dragging iframe{
 
 .window-content{
   height:calc(100% - 18px);
+  font-size:16px;
   transition:600ms;
 }
 

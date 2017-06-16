@@ -7,13 +7,14 @@ $(document).ready(function(){
     var dockwidth = 0;
     var dockposition = 0;
     var windowwidth = 0;
+    var filecontent = 0;
     var windowpositions = [];
     var minimizednames = [];
     var transition = 600;
     var file = 1;
     var filenames = ["Twitter", "Steam", "MyAnimeList", "MyFigureCollection"];
     var shortnames = ["Tw", "St", "MAL", "MFC"];
-    var fixedwindows = ["Twitter"];
+    var fixedwindows = [];
 
     /* Add windows and dock items from subfolder "windows" 
         - Filenames HAVE to be 1.html, 2.html and so on
@@ -27,33 +28,42 @@ $(document).ready(function(){
         $.ajax({
             url: 'windows/' + file + '.html',
             success: function(data){
-                $(".desktop").append(
-                   '<div class="window" id="' + filenames[file-1] + '-w">\
-                        <div class="window-header">\
-                            <div class="window-header-buttons">\
-                                <div class="window-header-button button-close"></div>\
-                                <div class="window-header-button button-minimize"></div>\
-                                <div class="window-header-button button-fullscreen"></div>\
+
+                $.get('windows/' + file + '.html', function(data) {
+                    filecontent = data;
+                    appendItems();
+                });
+
+                /* Extra function because $.get is stupid */
+
+                function appendItems(){
+
+                    $(".desktop").append(
+                       '<div class="window" id="' + filenames[file-1] + '-w">\
+                            <div class="window-header">\
+                                <div class="window-header-buttons">\
+                                    <div class="window-header-button button-close"></div>\
+                                    <div class="window-header-button button-minimize"></div>\
+                                    <div class="window-header-button button-fullscreen"></div>\
+                                </div>\
+                                <span class="window-header-title">' + filenames[file-1] + '</span>\
                             </div>\
-                            <span class="window-header-title">' + filenames[file-1] + '</span>\
-                        </div>\
-                        <div class="window-content">\
-                            <iframe src="windows/' + file + '.html"></iframe>\
-                        </div>\
-                    </div>'
-                );
+                            <div class="window-content">' + filecontent + '</div>\
+                        </div>'
+                    );
 
-                $(".dock").append(
-                   '<div class="dock-item" id="' + filenames[file-1] + '">\
-                        <div class="full-name">\
-                            ' + filenames[file-1] + '\
-                        </div>\
-                        ' + shortnames[file-1] + '\
-                    </div>'
-                );
+                    $(".dock").append(
+                       '<div class="dock-item" id="' + filenames[file-1] + '">\
+                            <div class="full-name">\
+                                ' + filenames[file-1] + '\
+                            </div>\
+                            ' + shortnames[file-1] + '\
+                        </div>'
+                    );
 
-                file++;
-                createWindows();
+                    file++;
+                    createWindows();
+                }
             },
             error: function(data){
                 console.log("Flat is justice");
@@ -87,21 +97,11 @@ $(document).ready(function(){
                 if(margin > 0){
                     margin--;
                 }
-                $("body").addClass("dragging");
-            },
-            stop: function() {
-                $("body").removeClass("dragging");
             }
         });
         
         $( ".window" ).not(".fixed-size").resizable({
-            containment: "parent", minHeight: 200, minWidth: 200, handles: 'n, e, s, w',
-            start: function() {
-                $("body").addClass("dragging");
-            },
-            stop: function() {
-                $("body").removeClass("dragging");
-            }
+            containment: "parent", minHeight: 200, minWidth: 200, handles: 'n, e, s, w'
         });
 
         /* Makes all windows background when clicking desktop */

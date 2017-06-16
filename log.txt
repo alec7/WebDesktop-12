@@ -1,5 +1,9 @@
 ~This only exists for my own convenience and reflection~
 
+0.0.7
+~Replace iframes with actual html code cause... fuck iframes
+-Remove iframe dragging and resizing workaround
+
 0.0.6
 +Generate windows and dock items dynamically from subfolder
 ~Fix window action buttons misbehaving when minimized
@@ -39,4 +43,3 @@
 notes
 Find solution to prevent window action buttons from bringing window to foreground
 Find solution for minimized window scaling
-iframes prevent window mousedown function 
