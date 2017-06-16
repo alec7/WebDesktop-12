@@ -7,7 +7,6 @@ $(document).ready(function(){
     var dockwidth = 0;
     var dockposition = 0;
     var windowwidth = 0;
-    var fontsize = 0;
     var windowpositions = [];
     var minimizednames = [];
     var transition = 600;
@@ -153,6 +152,8 @@ $(document).ready(function(){
 
             $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").addClass("window-minimized");
             $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css({"left" : 90*dockmitems, "transition" : transition + "ms"});
+            $(this).parent(".window-header-buttons").parent(".window-header").css({"transition" : transition + "ms"});
+            $(this).parent(".window-header-buttons").children(".window-header-button").css({"transform" : "scaleY(0)"});
             
             var item = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").position();
             item = item.left;
@@ -171,42 +172,6 @@ $(document).ready(function(){
 
             */
         });
-
-        /* Set general left margin for all minimized windows */
-
-        function setLeftMargin(){
-            dockposition = $(".dock-background").position();
-            var item = 160 + dockposition.left;
-            $(".window").each(function() {
-                if($(this).hasClass("window-minimized")){
-                    $(this).css({"margin-left" : item});
-                }
-            });
-        }
-
-        /* Sets pseudo dock width so minimized window positions can be taken from it*/
-
-        function setPseudoDockWidth(){
-            dockwidth = $(".dock").width();
-            $(".dock-background").css({"width" : dockwidth});
-        }
-
-        /* Calculates dock padding */
-
-        function setDockSize(){
-            $(".dock").css({"padding-right" : 90*dockmitems+5});
-            $(".dock-background").css({"padding-right" : 90*dockmitems+5});
-        }
-
-        /* Sets transition back to its value after window resizing done */
-
-        function setWindowTransition(){
-            $(".window").each(function(){
-                if($(this).hasClass("window-minimized")){
-                    $(".window").css({"transition" : transition + "ms"});
-                }
-            });
-        }
 
         /* Adjust left margin of minimized windows when window is resized
             - Also removes transition from minimized window to make then not behave weird as fuck
@@ -242,17 +207,19 @@ $(document).ready(function(){
                 $(this).removeClass("window-minimized");
                 $(".window").removeClass("foreground");
                 $(this).addClass("foreground");
+                $(this).children(".window-header").children(".window-header-buttons").children(".window-header-button").css({"transform" : "scaleY(1)"});
 
                 var windowname = $(this).attr('id');
                 windowname = jQuery.inArray( windowname, minimizednames);
                 item = windowpositions[windowname];
-                $(this).css({"left" : item, "transition" : transition + "ms"});
+                $(this).css({"left" : item});
                 minimizednames.splice(windowname, 1);
                 windowpositions.splice(windowname, 1);
 
                 item = $(this);
                 setTimeout(function(){
                     $(item).css({"transition" : "0ms"});
+                    $(item).children(".window-header").css({"transition" : "0ms"});
                 }, 1);
 
                 $(".window").each(function(){
@@ -317,5 +284,43 @@ $(document).ready(function(){
                 $("#" + id).addClass("active foreground");
             }
         });
+
+        /* FUNCTIONS */
+
+        /* Set general left margin for all minimized windows */
+
+        function setLeftMargin(){
+            dockposition = $(".dock-background").position();
+            var item = 160 + dockposition.left;
+            $(".window").each(function() {
+                if($(this).hasClass("window-minimized")){
+                    $(this).css({"margin-left" : item});
+                }
+            });
+        }
+
+        /* Sets pseudo dock width so minimized window positions can be taken from it*/
+
+        function setPseudoDockWidth(){
+            dockwidth = $(".dock").width();
+            $(".dock-background").css({"width" : dockwidth});
+        }
+
+        /* Calculates dock padding */
+
+        function setDockSize(){
+            $(".dock").css({"padding-right" : 90*dockmitems+5});
+            $(".dock-background").css({"padding-right" : 90*dockmitems+5});
+        }
+
+        /* Sets transition back to its value after window resizing done */
+
+        function setWindowTransition(){
+            $(".window").each(function(){
+                if($(this).hasClass("window-minimized")){
+                    $(".window").css({"transition" : transition + "ms"});
+                }
+            });
+        }
     }
 });

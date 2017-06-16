@@ -38,3 +38,5 @@
 
 notes
 Find solution to prevent window action buttons from bringing window to foreground
+Find solution for minimized window scaling
+iframes prevent window mousedown function 
