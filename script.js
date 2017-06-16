@@ -12,6 +12,17 @@ $(document).ready(function(){
     var minimizednames = [];
     var transition = 600;
 
+    /* Add action buttons to windows */
+
+    $( ".window-header" ).prepend(
+        '<div class="window-header-buttons">\
+          <div class="window-header-button button-close"></div>\
+          <div class="window-header-button button-minimize"></div>\
+          <div class="window-header-button button-fullscreen"></div>\
+        </div>' );
+
+    /* Call function to set initial width */
+
     setPseudoDockWidth();
 
     /* jQuery UI Draggable and Resizable functions */
@@ -53,7 +64,7 @@ $(document).ready(function(){
 
     $(".button-close").click(function(){
         $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css({"display" : "none"});
-        $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").removeClass("active show-indicator");
+        $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").removeClass("active");
 
         var item = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").attr('id');
         item = item.slice(0, -2);
@@ -147,12 +158,12 @@ $(document).ready(function(){
     /* Restores window
         - Adjusts dock padding
         - Restores window by removing class
+        - Adjusts foreground classes
         - Fetches window name and searches for its position N in window name array
         - Grabs "left" value N from window position array
         - Sets "left" value for window
-        - Adds transition to window and removes it when done
         - Removes name and position from array
-        - Sets left value of each minimized window when a window gets restored
+        - Adds transition to window and removes it when done
         - Restores font size of window contents and scale factor of iframes
      */
 
