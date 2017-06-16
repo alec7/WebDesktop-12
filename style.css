@@ -210,12 +210,6 @@ html,body{
   transition:600ms;
 }
 
-iframe{
-  border:0;
-  width:100%;
-  height:100%;
-}
-
 .ui-icon{
   display:none !important;
 }

@@ -6,7 +6,6 @@ $(document).ready(function(){
     var dockmitems = 0;
     var dockwidth = 0;
     var dockposition = 0;
-    var windowwidth = 0;
     var filecontent = 0;
     var windowpositions = [];
     var minimizednames = [];
@@ -142,8 +141,6 @@ $(document).ready(function(){
             - Minimizes window with class and specific "left" positioning property
             - Adds transition to window and removes it when done
             - Saves window position and window name in separate arrays
-            - Calculates scale value from window width, sets it for iframes (content of windows) -- removed temporarily
-            - Also calculates scale factor for iframe width to fill minimized window -- removed temporarily
          */
 
         $(".button-minimize").click(function(){
@@ -162,15 +159,6 @@ $(document).ready(function(){
             minimizednames.push(item);
             
             setLeftMargin();
-
-            /*
-
-            windowwidth = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").width();
-            windowwidth = 78 / (windowwidth+2);
-            item = 1000 * windowwidth;
-            $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").children(".window-content").css({"transform" : "scale(" + windowwidth + ")", "width" : item + "%", "height" : item + "%"});
-
-            */
         });
 
         /* Adjust left margin of minimized windows when window is resized
@@ -194,7 +182,6 @@ $(document).ready(function(){
             - Sets "left" value for window
             - Removes name and position from array
             - Adds transition to window and removes it immediately
-            - Restores font size of window contents and scale factor of iframes -- removed temporarily
          */
 
         $(".window").mouseup(function(){
@@ -232,8 +219,6 @@ $(document).ready(function(){
 
                 $(this).css({"margin-left" : "0"});
                 setLeftMargin();
-
-                /* $(this).children(".window-content").css({"transform" : "scale(1)", "width" : "100%", "height" : "100%"}); -- removed temporarily */
             }
         });
 
