@@ -250,6 +250,13 @@ $(document).ready(function(){
             var item = $(this);
             var id = $(this).attr('id');
             id += "-w";
+
+            if(!($("#" + id).hasClass("window-minimized"))){
+                zindex++;
+                $("#" + id).css({"z-index" : zindex});
+                $(".window").removeClass("foreground");
+                $("#" + id).addClass("foreground");
+            }
             
             if(!($(this).hasClass("bounce"))){
                 setTimeout(function(){
@@ -269,9 +276,8 @@ $(document).ready(function(){
             if(!($(this).hasClass("active"))){
                 
                 margin++;
-                zindex++;
                 
-                $("#" + id).css({"display" : "block", "z-index" : zindex});
+                $("#" + id).css({"display" : "block"});
                 
                 if(!($(this).hasClass("no-virgin"))){
                     $("#" + id).css({"left" : margin*40, "top" : margin*40});

@@ -3,6 +3,7 @@
 0.1.1
 
 +Splash screen until dock and windows are built
++Clicking dock item brings already opened window to foreground
 ~Replace grid layout with normal block positioned items (Makes the site work in Edge/IE, animations are just fucked)
 ~Fix z-index values across browsers
 ~Fix resizing applying transition to non-minimized windows
