@@ -105,7 +105,7 @@ $(document).ready(function(){
 
         /* Remove cover */
 
-        $(".cover").css({"opacity" : "0", "visibility" : "hidden"});
+        $(".cover").css({"transform" : "scale(1.5)", "opacity" : "0", "visibility" : "hidden"});
 
         /* Makes all windows background when clicking desktop */
 
@@ -155,9 +155,15 @@ $(document).ready(function(){
             setDockSize();
 
             $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").addClass("window-minimized");
-            $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css({"left" : 90*dockmitems, "transition" : transition + "ms", "z-index" : "10001"});
+            $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css({"left" : 90*dockmitems, "transition" : transition + "ms", "z-index" : 10000+zindex});
             $(this).parent(".window-header-buttons").parent(".window-header").css({"transition" : transition + "ms"});
             $(this).parent(".window-header-buttons").children(".window-header-button").css({"transform" : "scaleY(0)"});
+
+            $(".dock").css({"z-index" : zindex-1});
+
+            setTimeout(function(){
+                $(".dock").css({"z-index" : 10000});
+            }, transition);
             
             var item = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").position();
             item = item.left;

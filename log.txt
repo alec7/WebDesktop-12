@@ -50,4 +50,5 @@ Find solution to prevent window action buttons from bringing window to foregroun
 Find solution for minimized window scaling
 clicking on dock starter needs to bring window to foreground
 need notice for mobile user
-splash screen until windows and dock items built (this is just a second max)
+Rezizing windows sometimes gives them transition value?? (vertical resize)
+Header and window content in one html file, append to both, apply display:none to header content and window content accordingly to hide one from the other
