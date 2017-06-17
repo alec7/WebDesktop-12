@@ -4,6 +4,8 @@
 
 +Splash screen until dock and windows are built
 ~Replace grid layout with normal block positioned items (Makes the site work in Edge/IE, animations are just fucked)
+~Fix z-index values across browsers
+~Fix resizing applying transition to non-minimized windows
 
 0.0.7 / 0.1
 ~Replace iframes with actual html code cause... fuck iframes
@@ -49,6 +51,5 @@ notes
 Find solution to prevent window action buttons from bringing window to foreground
 Find solution for minimized window scaling
 clicking on dock starter needs to bring window to foreground
-need notice for mobile user
-Rezizing windows sometimes gives them transition value?? (vertical resize)
+need notice for mobile users
 Header and window content in one html file, append to both, apply display:none to header content and window content accordingly to hide one from the other

@@ -316,7 +316,7 @@ $(document).ready(function(){
         function setWindowTransition(){
             $(".window").each(function(){
                 if($(this).hasClass("window-minimized")){
-                    $(".window").css({"transition" : transition + "ms"});
+                    $(this).css({"transition" : transition + "ms"});
                 }
             });
         }
