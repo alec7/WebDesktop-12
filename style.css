@@ -1,8 +1,5 @@
 html,body{
   margin:0;
-  height:100vh;
-  display:grid;
-  grid-template:25px 1fr 75px / 1fr;
   font-family: 'Roboto', sans-serif;
   overflow:hidden;
   background:#eee url('https://i.imgur.com/m8ztnbH.jpg') no-repeat center;
@@ -11,11 +8,30 @@ html,body{
 }
 
 .header{
+  height:25px;
   background:rgba(0,0,0,0.5);
 }
 
 .desktop{
+  height:calc(100vh - 25px);
   position:relative;
+}
+
+.cover{
+  z-index:100000;
+  position:fixed;
+  top:0;
+  bottom:0;
+  right:0;
+  left:0;
+  font-size:4vmax;
+  font-weight:100;
+  color:white;
+  background:#2196F3;
+  transition:600ms;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .backdrop{
@@ -48,7 +64,7 @@ html,body{
 .window-minimized{
   height:50px !important;
   width:80px !important;
-  top:calc(100% + 10px) !important;
+  top:calc(100% - 65px) !important;
   cursor:pointer;
   border:1px solid transparent;
   border-radius:0px;
@@ -215,7 +231,10 @@ html,body{
 }
 
 .footer{
-  position:relative;
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:75px;
 }
 
 .dock-background{
@@ -227,6 +246,7 @@ html,body{
 }
 
 .dock{
+  z-index:10000;
   display: flex;
   position:absolute;
   padding:0 5px;

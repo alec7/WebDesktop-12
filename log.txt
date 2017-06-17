@@ -1,5 +1,10 @@
 ~This only exists for my own convenience and reflection~
 
+0.1.1
+
++Splash screen until dock and windows are built
+~Replace grid layout with normal block positioned items (Makes the site work in Edge/IE, animations are just fucked)
+
 0.0.7 / 0.1
 ~Replace iframes with actual html code cause... fuck iframes
 -Remove iframe dragging and resizing workaround
@@ -44,3 +49,5 @@ notes
 Find solution to prevent window action buttons from bringing window to foreground
 Find solution for minimized window scaling
 clicking on dock starter needs to bring window to foreground
+need notice for mobile user
+splash screen until windows and dock items built (this is just a second max)

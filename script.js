@@ -103,6 +103,10 @@ $(document).ready(function(){
             containment: "parent", minHeight: 200, minWidth: 200, handles: 'n, e, s, w'
         });
 
+        /* Remove cover */
+
+        $(".cover").css({"opacity" : "0", "visibility" : "hidden"});
+
         /* Makes all windows background when clicking desktop */
 
         $(".backdrop").click(function(){
@@ -113,7 +117,10 @@ $(document).ready(function(){
 
         $(".window").mousedown(function(){
             zindex++;
-            $(this).css({"z-index" : zindex});
+            item = $(this);
+            if(!($(this).hasClass("window-minimized"))){
+                $(this).css({"z-index" : zindex});
+            }
             $(".window").removeClass("foreground");
             $(this).addClass("foreground");
         });
@@ -148,7 +155,7 @@ $(document).ready(function(){
             setDockSize();
 
             $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").addClass("window-minimized");
-            $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css({"left" : 90*dockmitems, "transition" : transition + "ms"});
+            $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css({"left" : 90*dockmitems, "transition" : transition + "ms", "z-index" : "10001"});
             $(this).parent(".window-header-buttons").parent(".window-header").css({"transition" : transition + "ms"});
             $(this).parent(".window-header-buttons").children(".window-header-button").css({"transform" : "scaleY(0)"});
             
@@ -205,9 +212,9 @@ $(document).ready(function(){
 
                 item = $(this);
                 setTimeout(function(){
-                    $(item).css({"transition" : "0ms"});
+                    $(item).css({"transition" : "0ms", "z-index" : zindex});
                     $(item).children(".window-header").css({"transition" : "0ms"});
-                }, 1);
+                }, 100);
 
                 $(".window").each(function(){
                     if($(this).hasClass("window-minimized")){
