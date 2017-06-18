@@ -1,5 +1,10 @@
 ~This only exists for my own convenience and reflection~
 
+0.1.2
+
++Dock design
+~Fix calculation of minimized windows margin
+
 0.1.1
 
 +Splash screen until dock and windows are built

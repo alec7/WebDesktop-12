@@ -4,6 +4,7 @@ $(document).ready(function(){
     var margin = 0;
     var item = 0;
     var dockmitems = 0;
+    var dockmitemswidth = 92;
     var dockwidth = 0;
     var dockposition = 0;
     var filecontent = 0;
@@ -11,8 +12,7 @@ $(document).ready(function(){
     var minimizednames = [];
     var transition = 600;
     var file = 1;
-    var filenames = ["Twitter", "Steam", "MyAnimeList", "MyFigureCollection"];
-    var shortnames = ["Tw", "St", "MAL", "MFC"];
+    var filenames = ["Twitter", "Steam", "GitHub", "MyAnimeList", "MyFigureCollection"];
     var fixedwindows = [];
 
     /* Add windows and dock items from subfolder "windows" 
@@ -52,28 +52,27 @@ $(document).ready(function(){
                     );
 
                     $(".dock").append(
-                       '<div class="dock-item" id="' + filenames[file-1] + '">\
+                       '<div class="dock-item" id="' + filenames[file-1] + '" style="background:url(windows/' + file + '.png) no-repeat center">\
                             <div class="full-name">\
                                 ' + filenames[file-1] + '\
                             </div>\
-                            ' + shortnames[file-1] + '\
                         </div>'
                     );
+
 
                     file++;
                     createWindows();
                 }
             },
             error: function(data){
-                console.log("Flat is justice");
-                setFixedSize();
+                setFixedSizeWindows();
             },
         });
     }
 
     /* Makes all windows in array fixed size, then calls everything else */
 
-    function setFixedSize(){
+    function setFixedSizeWindows(){
         for (var i = 0; i < fixedwindows.length; i++) {
             $("#" + fixedwindows[i] + "-w").addClass("fixed-size");
         }
@@ -152,10 +151,10 @@ $(document).ready(function(){
 
         $(".button-minimize").click(function(){
             dockmitems++;
-            setDockSize();
+            SetDockPadding();
 
             $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").addClass("window-minimized");
-            $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css({"left" : 90*dockmitems, "transition" : transition + "ms", "z-index" : 10000+zindex});
+            $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css({"left" : dockmitemswidth*dockmitems, "transition" : transition + "ms", "z-index" : 10000+zindex});
             $(this).parent(".window-header-buttons").parent(".window-header").css({"transition" : transition + "ms"});
             $(this).parent(".window-header-buttons").children(".window-header-button").css({"transform" : "scaleY(0)"});
 
@@ -172,6 +171,7 @@ $(document).ready(function(){
             minimizednames.push(item);
             
             setLeftMargin();
+            dockSeparator();
         });
 
         /* Adjust left margin of minimized windows when window is resized
@@ -203,7 +203,7 @@ $(document).ready(function(){
                 if(dockmitems > 0){
                     dockmitems--;
                 }
-                setDockSize();
+                SetDockPadding();
                 $(this).removeClass("window-minimized");
                 $(".window").removeClass("foreground");
                 $(this).addClass("foreground");
@@ -226,12 +226,13 @@ $(document).ready(function(){
                     if($(this).hasClass("window-minimized")){
                         var windowname = $(this).attr('id');
                         windowname = jQuery.inArray( windowname, minimizednames);
-                        $(this).css({"left" : 90*(windowname+1)});
+                        $(this).css({"left" : dockmitemswidth*(windowname+1)});
                     }
                 });
 
                 $(this).css({"margin-left" : "0"});
                 setLeftMargin();
+                dockSeparator();
             }
         });
 
@@ -260,16 +261,28 @@ $(document).ready(function(){
             
             if(!($(this).hasClass("bounce"))){
                 setTimeout(function(){
-                    $(item).removeClass("bounce");
+                    $(item).removeClass("bounce-2");
                     $(item).children(".full-name").removeClass("bounce-down");
                     if($("#" + id).hasClass("active")){
                         $(item).addClass("show-indicator");
                     }
-                }, 1500);
+                }, 1400);
             }
 
             if(!($(this).hasClass("show-indicator"))){
-                $(this).addClass("bounce");
+                $(this).addClass("bounce-1");
+                setTimeout(function(){
+                    $(item).removeClass("bounce-1");
+                    $(item).addClass("bounce-2");
+                }, 400);
+                setTimeout(function(){
+                    $(item).removeClass("bounce-2");
+                    $(item).addClass("bounce-1");
+                }, 700);
+                setTimeout(function(){
+                    $(item).removeClass("bounce-1");
+                    $(item).addClass("bounce-2");
+                }, 1100);
                 $(this).children(".full-name").addClass("bounce-down");
             }
             
@@ -294,8 +307,12 @@ $(document).ready(function(){
         /* Set general left margin for all minimized windows */
 
         function setLeftMargin(){
+            item = 0;
+            $(".dock-item").each(function(){
+                item++
+            });
             dockposition = $(".dock-background").position();
-            var item = 160 + dockposition.left;
+            var item = (70*(item-1))+23 + dockposition.left;
             $(".window").each(function() {
                 if($(this).hasClass("window-minimized")){
                     $(this).css({"margin-left" : item});
@@ -308,13 +325,19 @@ $(document).ready(function(){
         function setPseudoDockWidth(){
             dockwidth = $(".dock").width();
             $(".dock-background").css({"width" : dockwidth});
+            $(".dock-separator").css({"transform" : "translateX(" + (dockwidth+22) + "px)"});
         }
 
         /* Calculates dock padding */
 
-        function setDockSize(){
-            $(".dock").css({"padding-right" : 90*dockmitems+5});
-            $(".dock-background").css({"padding-right" : 90*dockmitems+5});
+        function SetDockPadding(){
+            if(dockmitems > 0){
+                $(".dock").css({"padding-right" : dockmitemswidth*dockmitems+40});
+                $(".dock-background").css({"padding-right" : dockmitemswidth*dockmitems+40});
+            }else{
+                $(".dock").css({"padding-right" : dockmitemswidth*dockmitems+6});
+                $(".dock-background").css({"padding-right" : dockmitemswidth*dockmitems+6});
+            }
         }
 
         /* Sets transition back to its value after window resizing done */
@@ -325,6 +348,14 @@ $(document).ready(function(){
                     $(this).css({"transition" : transition + "ms"});
                 }
             });
+        }
+
+        function dockSeparator(){
+            if(dockmitems > 0){
+                $(".dock-separator").css({"visibility" : "visible", "opacity" : "1"});
+            }else{
+                $(".dock-separator").css({"visibility" : "hidden", "opacity" : "0"});
+            }
         }
     }
 });
