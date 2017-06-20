@@ -1,21 +1,45 @@
 $(document).ready(function(){
 
-    var zindex = 0;
-    var margin = 0;
-    var item = 0;
-    var dockmitems = 0;
-    var dockmitemswidth = 92;
-    var dockwidth = 0;
-    var dockposition = 0;
-    var filecontent = 0;
-    var windowpositions = [];
-    var minimizednames = [];
-    var transition = 600;
-    var file = 1;
+    /* -- DO NOT CHANGE THESE -- */
+
+    var zindex = 0;             //z-index for windows
+    var margin = 0;             //margin for initial positioning of windows (counts windows occupying space)
+    var item = 0;               //throwaway variable, used for absolutely everything
+    var menuactive = 0;         //Is header menu open?
+    var isLink = 0;             //Is the element in the header menu being clicked a link?
+    var isButton = 0;           //Is the element below the mouse a window button?
+    var dockmitems = 0;         //Amount of minimized windows
+    var dockmitemswidth = 92;   //Width of minimized icons including margin
+    var dockwidth = 0;          //Width of dock, is filled in automatically
+    var dockposition = 0;       //Position of dock, is filled in automatically
+    var filecontent = 0;        //Content of scanned file, needed for generation of windows
+    var windowpositions = [];   //Storage for positions of windows being minimized
+    var minimizednames = [];    //Storage for names of windows being minimized
+    var transition = 600;       //Duration of all transitions
+    var file = 1;               //Used to scan subdirectory
+
+    /* -- CONFIGURABLE OPTIONS -- */
+
+    // Titles of the default header files
+    var SubfolderName = "windows";
+    var DefaultDynamicMenu = "dynamic-default";
+    var DefaultFixedMenu = "fixed-default";
+    var DefaultIconName = "icon";
+
+    // Title shown in default menu
+    var id = "WebDesktop";
+    var initialID = id;
+    
+    // Colours to be used in randomizer
+    var colours = ["red", "pink", "purple", "deeppurple", "indigo", "lightblue", "cyan", "teal", "green", "lightgreen", "lime", "yellow", "amber", "orange", "deeporange"];
+    
+    // Names of windows being generated (Filenames are 1.html, 2.html and so on, so their names need to be specified
     var filenames = ["Twitter", "Steam", "GitHub", "MyAnimeList", "MyFigureCollection"];
+    
+    // Names of windows being non-resizable
     var fixedwindows = [];
 
-    /* Add windows and dock items from subfolder "windows" 
+    /* Add windows and dock items from subfolder "windows"
         - Filenames HAVE to be 1.html, 2.html and so on
         - Each time a file is found, its name and short name is taken from arrays
         - Calls fixed size method after adding of all windows is done
@@ -24,12 +48,59 @@ $(document).ready(function(){
     createWindows();
 
     function createWindows(){
+
+        /* Load initial menus */
+
+        filename = DefaultFixedMenu;
+        loadInitialMenu();
+
+        filename = DefaultDynamicMenu;
+        loadInitialMenu();
+
+        function loadInitialMenu(){
+
+            if(filename == DefaultFixedMenu){
+
+                $.get(SubfolderName + '/' + filename + '.html', function(response) {
+                     filecontent = response;
+                     filecontent  = filecontent .replace('<navbar>', '<div class="navbar">')
+                                                .replace('<option>', '<div class="navbar-option"><img src="' + SubfolderName + '/' + DefaultIconName + '.png">')
+                                                .replace(/<option>/g, '<div class="navbar-option">')
+                                                .replace(/<submenu>/g, '<div class="navbar-submenu">')
+                                                .replace(/<section>/g, '<div class="navbar-section">')
+                                                .replace('ABOUT', '<a>About ' + id + '</a>')
+                                                .replace('QUIT', '<a>Quit ' + id + '</a>')
+                                                .replace(/<\/>/g, '</div>');
+                     $('.menu-static').html(filecontent);
+                });
+            }else{
+                $.get(SubfolderName + '/' + filename + '.html', function(response) {
+                     filecontent = response;
+                     filecontent  = filecontent .replace('<navbar>', '<div class="navbar">')
+                                                .replace('<option>', '<div class="navbar-option navbar-option-first">' + id)
+                                                .replace(/<option>/g, '<div class="navbar-option">')
+                                                .replace(/<submenu>/g, '<div class="navbar-submenu">')
+                                                .replace(/<section>/g, '<div class="navbar-section">')
+                                                .replace('ABOUT', '<a>About ' + id + '</a>')
+                                                .replace('QUIT', '<a>Quit ' + id + '</a>')
+                                                .replace(/<\/>/g, '</div>');
+                     $('.menu-dynamic').html(filecontent);
+                });
+            }
+        }
+
+        /* Generate windows and dock items */
+
         $.ajax({
-            url: 'windows/' + file + '.html',
+            url: SubfolderName + '/' + file + '.html',
             success: function(data){
 
-                $.get('windows/' + file + '.html', function(data) {
-                    filecontent = data;
+                $.get(SubfolderName + '/' + file + '.html', function(data) {
+                    filecontent  = data .replace('<navbar>', '<div class="navbar">')
+                                        .replace(/<option>/g, '<div class="navbar-option">')
+                                        .replace(/<submenu>/g, '<div class="navbar-submenu">')
+                                        .replace(/<section>/g, '<div class="navbar-section">')
+                                        .replace(/<\/>/g, '</div>');
                     appendItems();
                 });
 
@@ -52,7 +123,7 @@ $(document).ready(function(){
                     );
 
                     $(".dock").append(
-                       '<div class="dock-item" id="' + filenames[file-1] + '" style="background:url(windows/' + file + '.png) no-repeat center">\
+                       '<div class="dock-item" id="' + filenames[file-1] + '" style="background:url(' + SubfolderName + '/' + file + '.png) no-repeat center">\
                             <div class="full-name">\
                                 ' + filenames[file-1] + '\
                             </div>\
@@ -64,7 +135,7 @@ $(document).ready(function(){
                     createWindows();
                 }
             },
-            error: function(data){
+            error: function(){
                 setFixedSizeWindows();
             },
         });
@@ -87,10 +158,81 @@ $(document).ready(function(){
 
         setPseudoDockWidth();
 
+        /* Fade in desktop elements and remove transform to fix z-index afterwards */
+
+        $("header").css({"transform" : "translateY(0)"});
+        $("footer").css({"transform" : "translateY(0)"});
+        setTimeout(function(){
+            $("header").css({"transform" : "initial"});
+            $("footer").css({"transform" : "initial"});
+        }, 100);
+
+        /* -- HEADER -- */
+
+        /* Close menu */
+
+        $(".header-space, .desktop, footer").on('mousedown', function(){
+            if(menuactive == 1){
+                $(".navbar-option").css({"background" : "initial"});
+                $(".navbar-submenu").css({"display" : "none"});
+                menuactive = 0;
+            }
+        });
+
+        $(".menu").on('click', 'a', function(){
+            $(".navbar-option").css({"background" : "initial"});
+            $(".navbar-submenu").css({"display" : "none"});
+            menuactive = 0;
+        });
+
+        /* Set isLink variable */
+
+        $(".menu").on('mousedown', 'a', function(){
+            isLink = 1;
+        });
+
+        $("body").on('mouseup', 'a', function(){
+            isLink = 0;
+        });
+
+        /* Open menu or close if opened */
+
+        $(".menu").on('mousedown', '.navbar-option', function(){
+            if(menuactive == 1 && isLink == 0){
+                $(this).css({"background" : "initial"});
+                $(this).children(".navbar-submenu").css({"display" : "none"});
+                menuactive = 0;
+            }else{
+                $(this).css({"background" : "#0664E0"});
+                $(this).children(".navbar-submenu").css({"display" : "initial"});
+                menuactive = 1;
+            }
+        });
+
+        /* Switch over on hover if menu already opened */
+
+        $(".menu").on('mouseover', '.navbar-option', function(){
+            if(menuactive == 1){
+                $(".navbar-option").css({"background" : "initial"});
+                $(this).css({"background" : "#0664E0"});
+                $(".navbar-submenu").css({"display" : "none"});
+                $(this).children(".navbar-submenu").css({"display" : "initial"});
+            }
+        });
+
+        /* Hide menu when hovering rest of header */
+
+        $(".header-space").on('mouseover', function(){
+            $(".navbar-option").css({"background" : "initial"});
+            $(".navbar-submenu").css({"display" : "none"});
+        });
+
+        /* -- WINDOWS -- */
+
         /* jQuery UI Draggable and Resizable functions */
 
         $( ".window" ).draggable({
-            containment: "parent", handle: ".window-header",
+            containment: "parent", handle: ".window-header", cancel: ".window-header-button",
             start: function() {
                 if(margin > 0){
                     margin--;
@@ -106,22 +248,46 @@ $(document).ready(function(){
 
         $(".cover").css({"transform" : "scale(1.5)", "opacity" : "0", "visibility" : "hidden"});
 
-        /* Makes all windows background when clicking desktop */
+        /* Makes all windows background ones when clicking desktop, also clears dynamic menu */
 
         $(".backdrop").click(function(){
             $(".window").removeClass("foreground");
+            filename = DefaultDynamicMenu;
+            id = initialID;
+            loadMenu(filename, id);
         });
 
-        /* Bring clicked window to foreground */
+        /* Bring clicked window to foreground, set dynamic menu accordingly */
 
         $(".window").mousedown(function(){
-            zindex++;
-            item = $(this);
-            if(!($(this).hasClass("window-minimized"))){
-                $(this).css({"z-index" : zindex});
+            if(isButton == 0){
+                zindex++;
+                item = $(this);
+                if(!($(this).hasClass("window-minimized"))){
+                    $(this).css({"z-index" : zindex});
+                }
+                $(".window").removeClass("foreground");
+                $(this).addClass("foreground");
+
+                if(!($(this).hasClass("window-minimized"))){
+                    var id = $(this).attr('id');
+                    id = id.slice(0, -2);
+                    var filename = filenames.indexOf(id);
+                    loadMenu(filename, id);
+                }
             }
-            $(".window").removeClass("foreground");
-            $(this).addClass("foreground");
+        });
+
+        /* Sets isButton variable, needed for window mousedown */
+
+        $(".window-header-button").hover(function(){
+            if(isButton == 0){
+                isButton = 1;
+                console.log(isButton);
+            }else{
+                isButton = 0;
+                console.log(isButton);
+            }
         });
 
         /* Closes window
@@ -133,13 +299,17 @@ $(document).ready(function(){
             $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").css({"display" : "none"});
             $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").removeClass("active");
 
-            var item = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").attr('id');
-            item = item.slice(0, -2);
-            $("#" + item).removeClass("active show-indicator");
+            var id = $(this).parent(".window-header-buttons").parent(".window-header").parent(".window").attr('id');
+            id = id.slice(0, -2);
+            $("#" + id).removeClass("active show-indicator");
 
             if(margin > 0){
                 margin--;
             }
+
+            filename = DefaultDynamicMenu;
+            id = initialID;
+            loadMenu(filename, id);
         });
 
         /* Minimizes window
@@ -194,6 +364,7 @@ $(document).ready(function(){
             - Grabs "left" value N from window position array
             - Sets "left" value for window
             - Removes name and position from array
+            - Sets dynamic menu
             - Adds transition to window and removes it immediately
          */
 
@@ -209,12 +380,17 @@ $(document).ready(function(){
                 $(this).addClass("foreground");
                 $(this).children(".window-header").children(".window-header-buttons").children(".window-header-button").css({"transform" : "scaleY(1)"});
 
-                var windowname = $(this).attr('id');
-                windowname = jQuery.inArray( windowname, minimizednames);
-                item = windowpositions[windowname];
+                var id = $(this).attr('id');
+                id = jQuery.inArray( id, minimizednames);
+                item = windowpositions[id];
                 $(this).css({"left" : item});
-                minimizednames.splice(windowname, 1);
-                windowpositions.splice(windowname, 1);
+                minimizednames.splice(id, 1);
+                windowpositions.splice(id, 1);
+
+                id = $(this).attr('id');
+                id = id.slice(0, -2);
+                var filename = filenames.indexOf(id);
+                loadMenu(filename, id);
 
                 item = $(this);
                 setTimeout(function(){
@@ -224,9 +400,9 @@ $(document).ready(function(){
 
                 $(".window").each(function(){
                     if($(this).hasClass("window-minimized")){
-                        var windowname = $(this).attr('id');
-                        windowname = jQuery.inArray( windowname, minimizednames);
-                        $(this).css({"left" : dockmitemswidth*(windowname+1)});
+                        var id = $(this).attr('id');
+                        id = jQuery.inArray( id, minimizednames);
+                        $(this).css({"left" : dockmitemswidth*(id+1)});
                     }
                 });
 
@@ -236,7 +412,7 @@ $(document).ready(function(){
             }
         });
 
-        /* DOCK */
+        /* -- FOOTER -- */
 
         /* Opens window
             - Only adds bounce animation when not already active
@@ -250,6 +426,10 @@ $(document).ready(function(){
             
             var item = $(this);
             var id = $(this).attr('id');
+            var filename = filenames.indexOf(id);
+            
+            loadMenu(filename, id);
+
             id += "-w";
 
             if(!($("#" + id).hasClass("window-minimized"))){
@@ -291,6 +471,9 @@ $(document).ready(function(){
                 margin++;
                 
                 $("#" + id).css({"display" : "block"});
+
+                var colour = colours[Math.floor(Math.random()*colours.length)];
+                $("#" + id).children(".window-content").children(".title").addClass(colour);
                 
                 if(!($(this).hasClass("no-virgin"))){
                     $("#" + id).css({"left" : margin*40, "top" : margin*40});
@@ -303,6 +486,38 @@ $(document).ready(function(){
         });
 
         /* FUNCTIONS */
+
+        /* Load html file, replace elements with actual divs (header) */
+
+        function loadMenu(filename, id){
+            if(filename == DefaultDynamicMenu){
+                $.get(SubfolderName + '/' + filename + '.html', function(response) {
+                     filecontent = response;
+                     filecontent  = filecontent .replace('<navbar>', '<div class="navbar">')
+                                                .replace('<option>', '<div class="navbar-option navbar-option-first">' + id)
+                                                .replace(/<option>/g, '<div class="navbar-option">')
+                                                .replace(/<submenu>/g, '<div class="navbar-submenu">')
+                                                .replace(/<section>/g, '<div class="navbar-section">')
+                                                .replace('ABOUT', '<a>About ' + id + '</a>')
+                                                .replace('QUIT', '<a>Quit ' + id + '</a>')
+                                                .replace(/<\/>/g, '</div>');
+                     $('.menu-dynamic').html(filecontent);
+                });
+            }else{
+                $.get(SubfolderName + '/' + (filename+1) + '.html', function(response) {
+                     filecontent = response;
+                     filecontent  = filecontent .replace('<navbar>', '<div class="navbar">')
+                                                .replace('<option>', '<div class="navbar-option navbar-option-first">' + id)
+                                                .replace(/<option>/g, '<div class="navbar-option">')
+                                                .replace(/<submenu>/g, '<div class="navbar-submenu">')
+                                                .replace(/<section>/g, '<div class="navbar-section">')
+                                                .replace('ABOUT', '<a>About ' + id + '</a>')
+                                                .replace('QUIT', '<a>Quit ' + id + '</a>')
+                                                .replace(/<\/>/g, '</div>');
+                     $('.menu-dynamic').html(filecontent);
+                });
+            }
+        }
 
         /* Set general left margin for all minimized windows */
 

@@ -1,5 +1,17 @@
 ~This only exists for my own convenience and reflection~
 
+0.1.3
+
++Header menu functionality (menus work, links do nothing yet)
++Header menu design
++Simpler syntax for menus, automatically replaced with proper html code when loaded
++Automatically replace keywords "ABOUT" and "QUIT" in menus
++Options for setting folder and filenames
++Material design colours CSS and JS array for randomizer to be used later on
++Fade-in animation for desktop elements
++Warning for mobile users to fuck off
+~Fix buttons letting events through
+
 0.1.2
 
 +Dock design
@@ -54,8 +66,6 @@
 +jQuery UI draggable and resizable windows
 
 notes
-Find solution to prevent window action buttons from bringing window to foreground
 Find solution for minimized window scaling
-clicking on dock starter needs to bring window to foreground
-need notice for mobile users
-Header and window content in one html file, append to both, apply display:none to header content and window content accordingly to hide one from the other
+Minimized windows need full-name on hover too. Generate full-name element into window too, show on window-minimized:hover?
+Not quite satisfied with the font yet. Maybe it's just the font rendering? Look into this at *some* point
