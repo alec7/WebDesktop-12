@@ -241,7 +241,9 @@ $(document).ready(function(){
         });
         
         $( ".window" ).not(".fixed-size").resizable({
-            containment: "parent", minHeight: 200, minWidth: 200, handles: 'n, e, s, w'
+            containment: "parent", minHeight: 239, minWidth: 202, handles: 'n, e, s, w'
+            /* minHeight 239px so first button in sidebar is always visible. 240 shows 1px of next button 
+               minWidth 202 = 200 sidebar width + 2 border                                                  */
         });
 
         /* Remove cover */
@@ -283,10 +285,8 @@ $(document).ready(function(){
         $(".window-header-button").hover(function(){
             if(isButton == 0){
                 isButton = 1;
-                console.log(isButton);
             }else{
                 isButton = 0;
-                console.log(isButton);
             }
         });
 
@@ -442,7 +442,6 @@ $(document).ready(function(){
             if(!($(this).hasClass("bounce"))){
                 setTimeout(function(){
                     $(item).removeClass("bounce-2");
-                    $(item).children(".full-name").removeClass("bounce-down");
                     if($("#" + id).hasClass("active")){
                         $(item).addClass("show-indicator");
                     }
@@ -463,7 +462,6 @@ $(document).ready(function(){
                     $(item).removeClass("bounce-1");
                     $(item).addClass("bounce-2");
                 }, 1100);
-                $(this).children(".full-name").addClass("bounce-down");
             }
             
             if(!($(this).hasClass("active"))){

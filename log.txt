@@ -1,5 +1,10 @@
 ~This only exists for my own convenience and reflection~
 
+0.1.4
+
++Window sidebar design
++Window content scales down when minimized
+
 0.1.3
 
 +Header menu functionality (menus work, links do nothing yet)
